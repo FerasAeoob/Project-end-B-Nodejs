@@ -1,4 +1,5 @@
 const db = require('../config/db_config');
+const argon2 = require('argon2');
 
 async function getAll(){
     try{
@@ -76,6 +77,34 @@ async function addUser({name, email, username, password}) {
     }
 }
 
+async function verifypassword(username, password) {
+    try{
+        const sql = `SELECT * FROM users WHERE username = ?`;
+        const [rows] = await db.query(sql, [username]);
+        if(!rows){
+            console.log("username not found 'caught at the password verification' ");
+            return false;
+        }
+       
+        const user = rows[0];
+        const hashed = user.password;
+
+        const isVaild = await argon2.verify(hashed, password);
+        if(isVaild)
+        {
+            return `welcome ${user.name}`;
+        }
+        else{
+            return "invalid passowrd";
+        }
+    }catch(err){
+        console.error("Error verifying password");
+        throw err;
+
+    }
+    
+}
+
 
 
 
@@ -88,4 +117,5 @@ module.exports ={
     addUser,
     getbyuname,
     getbyemail,
+    verifypassword,
 }
