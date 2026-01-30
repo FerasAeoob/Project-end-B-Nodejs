@@ -11,6 +11,15 @@ function valuesToAdd(req, res, next) {
     next();
 }
 
+function valuesToLogin(req,res,next){
+    const password = req.body.password;
+    const username = req.body.username;
+    if(!username || !password){
+        return res.status(400).json({message:"Please fill all filed"})
+    }
+    next();
+}
+
 async function encryptPassword(req, res, next) {
     try {
         const hash = await argon2.hash(req.user.password, {type: argon2.argon2id});
@@ -30,5 +39,6 @@ async function encryptPassword(req, res, next) {
 module.exports = {
     valuesToAdd,
     encryptPassword,
+    valuesToLogin,
     
 }

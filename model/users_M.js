@@ -90,13 +90,7 @@ async function verifypassword(username, password) {
         const hashed = user.password;
 
         const isVaild = await argon2.verify(hashed, password);
-        if(isVaild)
-        {
-            return `welcome ${user.name}`;
-        }
-        else{
-            return "invalid passowrd";
-        }
+        return isVaild;
     }catch(err){
         console.error("Error verifying password");
         throw err;

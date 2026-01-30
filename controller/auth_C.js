@@ -30,14 +30,10 @@ async function login(req,res) {
     try{
         const user = await getbyuname(req.body.username);
         if(!user){
-            return res.status(400).json({message:"username or password is invalid."});
+            return res.status(400).json({message:"please enter a vaild username or register"});
         }
         username = req.body.username;
         password = req.body.password;
-        
-        if(!password || !username){
-            return res.status(400).json({message:"username or password is missing"});
-        }
         let isMatched = await verifypassword(username, password);
         if(isMatched){
             let user = await getbyuname(req.body.username);
@@ -45,7 +41,7 @@ async function login(req,res) {
             return res.status(200).json({message:`welcome ${name}`});
         }
         else{
-            return res.status(400).json({message:"username or password is invalid."});
+            return res.status(400).json({message:"password is invalid."});
 
         }
 
