@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {valuesToAdd} = require('../middleware/auth_Mid');
-const {register,login} = require('../controller/auth_C');
+const {register,login,createjwt} = require('../controller/auth_C');
 const {encryptPassword,valuesToLogin} = require('../middleware/auth_Mid');
 
 
@@ -10,7 +10,7 @@ const {encryptPassword,valuesToLogin} = require('../middleware/auth_Mid');
 
 
 router.post('/reg',valuesToAdd,encryptPassword,register);
-router.post('/login',valuesToLogin,login);
+router.post('/login',valuesToLogin,login,createjwt);
 
 
 
