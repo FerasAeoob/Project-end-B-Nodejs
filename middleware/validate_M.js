@@ -9,7 +9,7 @@ function isValidId(req, res, next) {
 
 function VaulesToEdit(req, res, next) {
     
-    let obj = [];
+    let obj = {};
     if(req.body.name){
         obj.name = req.body.name;
     }

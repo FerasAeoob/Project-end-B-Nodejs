@@ -35,9 +35,57 @@ async function update(id, user){
     let [result] = await db.query(sql,[...values, id]);
     return result.affectedRows;
 }
+
+async function getbyuname(uname) {
+    try {
+        let sql = `SELECT * FROM users WHERE username = ?`;
+        let [row] = await db.query(sql, [uname]);
+        return row[0];
+    } catch (err) {
+        console.error("Error getting user by username:", err);
+        throw err; 
+    }
+}
+
+async function getbyemail(email) {
+    try {
+        let sql = `SELECT * FROM users WHERE email = ?`;
+        let [row] = await db.query(sql, [email]);
+        return row[0];
+    } catch (err) {
+        console.error("Error getting user by email:", err);
+        throw err;
+    }
+
+}
+
+async function addUser({name, email, username, password}) {
+    try {
+        // Use [result] to destructure the array returned by mysql2/promise
+        const [result] = await db.query(
+            'INSERT INTO users (name, username, email, password) VALUES (?, ?, ?, ?)',
+            [name, username, email, password]
+        );
+        
+        console.log("User added ID:", result.insertId); 
+        return result; 
+        
+    } catch (err) {
+        console.error("Error in addUser model:", err); 
+        throw err; // This allows the controller's catch block to see the error
+    }
+}
+
+
+
+
+
 module.exports ={
     getAll,
     getOne,
     remove,
     update,
+    addUser,
+    getbyuname,
+    getbyemail,
 }

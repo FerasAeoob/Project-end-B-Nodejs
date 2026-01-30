@@ -6,7 +6,7 @@ const {update} = require('../model/users_M');
 async function getAllUsers(req, res) {
     try{
         console.log("hi");
-        rows = await getAll();
+        let rows = await getAll();
         res.status(200).json(rows);
     }catch(err){
         res.status(500).json({message: "server error"});
@@ -16,8 +16,7 @@ async function getAllUsers(req, res) {
 
 async function getOneUser(req, res) {
     try{
-        console.log("hi");
-        rows = await getOne(req.id);
+        let rows = await getOne(req.id);
         res.status(200).json(rows);
     }catch(err){
         res.status(500).json({message: "server error"});

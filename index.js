@@ -10,5 +10,6 @@ app.use(express.json());
 
 app.get('/',(req,res)=>{res.sendFile(__dirname+'/public/login.html')});
 app.use('/users',require('./routes/users_R'));
+app.use('/auth',require('./routes/auth_R'));
 
 app.listen(port,()=>{console.log(`http://${api}:${port}`)});
