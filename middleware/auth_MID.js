@@ -1,5 +1,5 @@
 const argon2 = require('argon2'); // i used argon2id instead of btcrypt for password hashing
-
+const jwt = require('jsonwebtoken');
 function valuesToAdd(req, res, next) {
     let {name, username, email, password} = req.body;
     if (!name || !email || !username || !password) {
@@ -34,11 +34,32 @@ async function encryptPassword(req, res, next) {
     
 }
 
+function islogged(req, res, next) {
+    console.log("got to here");
+    let token = req.cookies.jwt2;  // Correct cookie access
+
+    if (!token) {
+        return res.status(401).json({ message: "Please login" });
+    }
+
+    try {
+        
+        const payload = jwt.verify(token, process.env.SECRET_KEY);
+        req.user = payload;
+        next();
+    } catch (err) {
+        console.error("JWT verification failed:", err);
+        return res.status(401).json({ message: "Invalid token" });
+    }
+}
+
+
 
 
 module.exports = {
     valuesToAdd,
     encryptPassword,
     valuesToLogin,
+    islogged,
     
 }
