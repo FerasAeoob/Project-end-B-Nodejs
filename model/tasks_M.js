@@ -36,8 +36,8 @@ async function getOneT(id) {
 
 async function addTask(name, cateid, userid) {
     try {
-        let sql = `INSERT INTO tasks (name, is_done, category_id, user_id) VALUES (?, ?, ?, ?)`;
-        let [result] = await db.query(sql, [name, false, cateid, userid]);
+        let sql = `INSERT INTO tasks (name, category_id, user_id) VALUES (?, ?, ?)`;
+        let [result] = await db.query(sql, [name, cateid, userid]);
         return result;
     } catch (err) {
         throw err;

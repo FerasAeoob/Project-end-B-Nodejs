@@ -84,12 +84,14 @@ async function editTask(req, res) {
         }
         const access = await checkaccessT(req.params.id,req.user.id);
         if (!access) {
-            return res.status(404).json({ message: "you dont have access to this task" });
+            return res.status(400).json({ message: "you dont have access to this task" });
         }
-        const result = await updateT(req.params.id, req.taskedit);
+        
+        const result = await updateT(req.params.id, req.taskEdit);
         if (result.affectedRows === 0) {
             return res.status(404).json({ message: "Task not found" });
         }
+        
         res.json({ message: "Task updated successfully" });
     } catch (err) {
         res.status(500).json({ error: err.message });

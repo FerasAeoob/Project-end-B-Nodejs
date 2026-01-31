@@ -8,8 +8,8 @@ const {islogged} = require('../middleware/auth_MID');
 
 
 router.get('/',islogged,getAllUsers);
-router.get('/:id',isValidId,getOneUser);
-router.delete('/:id',isValidId,deleteUser);
-router.patch('/:id',isValidId,VaulesToEdit,updateUser);
+router.get('/:id',islogged,isValidId,getOneUser);
+router.delete('/:id',islogged,isValidId,deleteUser);
+router.patch('/:id',islogged,isValidId,VaulesToEdit,updateUser);
 
 module.exports = router;
