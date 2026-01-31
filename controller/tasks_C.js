@@ -14,7 +14,7 @@ async function getOnetask(req, res) {
     try {
         const access = await checkaccessT(req.params.id,req.user.id);
         if (!access) {
-            return res.status(404).json({ message: "you dont have access to this task" });
+            return res.status(403).json({ message: "you dont have access to this task" });
         }
         const task = await getOneT(req.params.id);
         if (!task) {
@@ -30,7 +30,7 @@ async function createTask(req, res) {
     try {
         let task = req.task;
         if(await getTaskByname(task.name, req.user.id)){
-            return  res.status(400).json({ message: "Task name already exists" });
+            return  res.status(409).json({ message: "Task name already exists" });
         }
         
         if(!task.category_id){
@@ -40,7 +40,7 @@ async function createTask(req, res) {
         else{
             const access = await checkaccess(task.category_id,req.user.id);
             if (!access) {
-                return res.status(404).json({ message: "you dont have access to this category" });
+                return res.status(403).json({ message: "you dont have access to this category" });
             }
             const result = await addTask(task.name, task.category_id, req.user.id);
         res.status(201).json({ message: "Task created successfully" });
@@ -61,7 +61,7 @@ async function deleteTask(req, res) {
         }
         const access = await checkaccessT(req.params.id,req.user.id);
         if (!access) {
-            return res.status(404).json({ message: "you dont have access to this task" });
+            return res.status(403).json({ message: "you dont have access to this task" });
         }
         
         const result = await deleteT(req.params.id);
@@ -84,7 +84,7 @@ async function editTask(req, res) {
         }
         const access = await checkaccessT(req.params.id,req.user.id);
         if (!access) {
-            return res.status(400).json({ message: "you dont have access to this task" });
+            return res.status(403).json({ message: "you dont have access to this task" });
         }
         
         const result = await updateT(req.params.id, req.taskEdit);

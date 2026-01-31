@@ -13,10 +13,10 @@ async function register(req, res) {
         let uemail = await getbyemail(email);
 
         if(await getbyuname(username)){
-            return res.status(400).json({message: "username already exists"});
+            return res.status(409).json({message: "username already exists"});
         }
         if(await getbyemail(email)){
-            return res.status(400).json({message: "email already exists"});
+            return res.status(409).json({message: "email already exists"});
         }
 
        
@@ -34,7 +34,7 @@ async function login(req,res, next) {
     try{
         const user = await getbyuname(req.body.username);
         if(!user){
-            return res.status(400).json({message:"please enter a vaild username or register"});
+            return res.status(401).json({message:"please enter a vaild username or register"});
         }
         username = req.body.username;
         password = req.body.password;
@@ -46,7 +46,7 @@ async function login(req,res, next) {
             next();
         }
         else{
-            return res.status(400).json({message:"password is invalid."});
+            return res.status(401).json({message:"password is invalid."});
 
         }
 

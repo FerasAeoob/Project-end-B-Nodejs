@@ -2,8 +2,7 @@ const {getAll,getbyname,addToCategories,getbyid,remove,checkaccess,update} = req
 
 
 async function getAllCategories(req, res) {
-    try{
-        console.log("hi");
+    try{     
         let categories = await getAll();
         if(categories.length === 0){
             return res.status(404).json({message: "no categories found"});
@@ -20,16 +19,14 @@ async function createcategorie(req, res) {
         const check = await getbyname(req.body.name);
 
         if (check) {
-            return res.status(400).json({ message: "Category name already exists" });
+            return res.status(409).json({ message: "Category name already exists" });
         }
         
         const payload = req.user;
         
         const result = await addToCategories(req.body.name, payload.id);
         
-        res.status(201).json({
-message: "Category created successfully"});
-        
+        res.status(201).json({message: "Category created successfully"});
         
 
     } catch (err) {
@@ -56,7 +53,7 @@ async function deleteCategory(req, res) {
     let affectedRows = await remove(req.params.id,req.user.id);
     try{
         if (!affectedRows) {
-            return res.status(400).json({message: "category not found"});
+            return res.status(404).json({message: "category not found"});
         }
         res.status(200).json({message: "category deleted"});
     }catch(err){
@@ -74,10 +71,10 @@ async function updateCategory(req, res) {
         let name = req.body.name;
         let affectedRows = await update(id, name);
         if (!affectedRows) {
-            return res.status(400).json({message: "category not found"});
+            return res.status(404).json({message: "category not found"});
         }
 
-        res.status(200).json({message: "category updated"});
+        res.status(202).json({message: "category updated"});
     }catch(err){
         res.status(500).json({message: "server error"});
     }
