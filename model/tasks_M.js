@@ -54,10 +54,31 @@ async function getTaskByname(name, userid) {
     }
 }
 
+async function deleteT(id) {
+    try {
+        let sql = `DELETE FROM tasks WHERE id = ?`;
+        let [result] = await db.query(sql, [id]);
+        return result;
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function updateT(id, task){
+    let keys = Object.keys(task);
+    let values = Object.values(task);
+    let set  = keys.map(k =>`${k} = ?`).join(', ');
+    let sql = `UPDATE tasks SET ${set} WHERE id = ?`;
+    values.push(id);
+    let [result] = await db.query(sql, values);
+    return result;
+}
 module.exports={ 
     getallT,
     checkaccessT,
     getOneT,
     addTask,
     getTaskByname,
+    deleteT,
+    updateT,
 }

@@ -1,4 +1,4 @@
-const {getallT,checkaccessT,getOneT,addTask,getTaskByname} = require('../model/tasks_M');
+const {getallT,checkaccessT,getOneT,addTask,getTaskByname,deleteT,updateT} = require('../model/tasks_M');
 const {checkaccess,getbyid} = require('../model/categories_M');
 
 async function getAlltasks(req, res) {
@@ -52,8 +52,54 @@ async function createTask(req, res) {
     
 }
 
+
+async function deleteTask(req, res) {
+    try {
+        const isexist = await getOneT(req.params.id);
+        if (!isexist) {
+            return res.status(404).json({ message: "Task not found" });
+        }
+        const access = await checkaccessT(req.params.id,req.user.id);
+        if (!access) {
+            return res.status(404).json({ message: "you dont have access to this task" });
+        }
+        
+        const result = await deleteT(req.params.id);
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: "Task not found" });
+        }
+        res.json({ message: "Task deleted successfully" });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+}
+
+async function editTask(req, res) {
+
+    try {
+        
+        const isexist = await getOneT(req.params.id);
+        if (!isexist) {
+            return res.status(404).json({ message: "Task not found" });
+        }
+        const access = await checkaccessT(req.params.id,req.user.id);
+        if (!access) {
+            return res.status(404).json({ message: "you dont have access to this task" });
+        }
+        const result = await updateT(req.params.id, req.taskedit);
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: "Task not found" });
+        }
+        res.json({ message: "Task updated successfully" });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+}
+
 module.exports = {
     getAlltasks,
     getOnetask,
     createTask,
+    deleteTask,
+    editTask,
 }

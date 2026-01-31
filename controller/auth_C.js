@@ -12,7 +12,12 @@ async function register(req, res) {
         let uname = await getbyuname(username);
         let uemail = await getbyemail(email);
 
-        
+        if(await getbyuname(username)){
+            return res.status(400).json({message: "username already exists"});
+        }
+        if(await getbyemail(email)){
+            return res.status(400).json({message: "email already exists"});
+        }
 
        
         await addUser(req.user);
@@ -21,7 +26,7 @@ async function register(req, res) {
     }
     catch (err) {
         console.error("Error registering user:", err);
-        returnres.status(500).json({message: "Server error"});
+        return res.status(500).json({message: "Server error"});
     }
 }
 

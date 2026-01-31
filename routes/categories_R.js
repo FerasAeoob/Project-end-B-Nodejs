@@ -4,7 +4,7 @@ const {getAllCategories,createcategorie,getCategoryById,deleteCategory,updateCat
 //const {register,login,createjwt} = require('../controller/categories_C');
 const {islogged} = require('../middleware/auth_MID');
 const {valuesToadd,VaulesToEdit} = require('../middleware/categories_MID');
-const {isValidId} = require('../middleware/validate_MID');
+const {isValidId} = require('../middleware/validate_M');
 
 
 
