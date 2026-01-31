@@ -22,7 +22,7 @@ async function register(req, res) {
        
         await addUser(req.user);
         
-        return res.status(201).json({message: "User registered successfully"});
+        res.status(201).json({message: "User registered successfully"});
     }
     catch (err) {
         console.error("Error registering user:", err);

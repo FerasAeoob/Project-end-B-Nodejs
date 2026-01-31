@@ -10,6 +10,12 @@ async function  register() {
             headers: { 'Content-Type':'application/json' },
             body:JSON.stringify({name,email,username,password}),
         });
+       console.log(response.status);
+
+        if (response.status == 201){
+            window.location.href = '/login';
+            return;
+        }
         let data = await response.json();
         alert(data.message);
 
