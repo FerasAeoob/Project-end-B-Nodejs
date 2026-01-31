@@ -6,8 +6,11 @@ const {update} = require('../model/users_M');
 async function getAllUsers(req, res) {
     try{
         console.log("hi");
-        let rows = await getAll();
-        res.status(200).json(rows);
+        let users = await getAll();
+        if(users.length === 0){
+            return res.status(404).json({message: "no users found"});
+        }
+        res.status(200).json(users);
     }catch(err){
         res.status(500).json({message: "server error"});
     }

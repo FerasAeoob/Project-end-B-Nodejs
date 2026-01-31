@@ -14,9 +14,7 @@ async function register(req, res) {
 
         
 
-        if(uname || uemail) {
-            return res.status(400).json({message: "Username or email already exists"});
-        }
+       
         await addUser(req.user);
         
         return res.status(201).json({message: "User registered successfully"});
