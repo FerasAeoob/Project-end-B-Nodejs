@@ -6,7 +6,8 @@ async function getAll(){
         let sql = `SELECT name FROM categories`;
         let [row] = await db.query(sql);
         return row;
-    }catch(err){    
+    }catch(err){
+        console.error("Error getting all categories:");
         throw err;
     }   
 }
@@ -16,6 +17,7 @@ async function getbyname(name) {
         let [row] = await db.query(sql,[name]);
         return row[0];
     }catch(err){
+        console.error("Error getting category by name:");
         throw err;
     }
 }
@@ -26,13 +28,55 @@ async function addToCategories(name,userid) {
         let [result] = await db.query(sql,[name,userid]);
         return result;
     }catch(err){
+        console.error("Error adding category:");
         throw err;
     }
 }
 
+async function getbyid(id) {
+    try{
+        let sql = `SELECT * FROM categories WHERE id = ?`;
+        let [row] = await db.query(sql,[id]);
+        return row[0];
+    }catch(err){
+        console.error("Error getting category by id:");
+        throw err;
+    }
+}
 
+async function remove(catid,userid){
+    let sql = `DELETE FROM categories WHERE id = ? AND user_id = ?`;
+    let [result] = await db.query(sql,[catid,userid]);
+    return result.affectedRows;
+}
+
+async function checkaccess(catid,userid){
+    try{
+        let sql = `SELECT * FROM categories WHERE id = ? AND user_id = ?`;
+        let [row] = await db.query(sql,[catid,userid]);
+        return row[0];
+    }catch(err){
+        console.error("Error checking access:");
+        throw err;
+    }
+}
+
+async function update(catid, category){
+    try{
+        let sql = `UPDATE categories SET name = ? WHERE id = ?`;
+        let [result] = await db.query(sql,[category, catid]);
+        return result.affectedRows;
+    }catch(err){
+        console.error("Error updating category:");
+        throw err;
+    }
+}
 module.exports ={
     getAll,
     addToCategories,
     getbyname,
+    getbyid,
+    remove,
+    checkaccess,
+    update,
 }

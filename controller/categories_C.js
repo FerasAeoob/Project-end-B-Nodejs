@@ -1,4 +1,4 @@
-const {getAll,getbyname,addToCategories} = require('../model/categories_M');
+const {getAll,getbyname,addToCategories,getbyid,remove,checkaccess,update} = require('../model/categories_M');
 
 
 async function getAllCategories(req, res) {
@@ -27,7 +27,8 @@ async function createcategorie(req, res) {
         
         const result = await addToCategories(req.body.name, payload.id);
         
-        res.status(201).json({message: "Category created successfully"});
+        res.status(201).json({
+message: "Category created successfully"});
         
         
 
@@ -37,9 +38,54 @@ async function createcategorie(req, res) {
     }
 }
 
+async function getCategoryById(req, res) {
+    try {
+        const category = await getbyid(req.params.id);
+        
+        if (!category) {
+            return res.status(404).json({ message: "Category not found" });
+        }
+        res.status(200).json(category);
+    } catch (err) {
+        res.status(500).json({ message: "serverdd error" });
+    }
+}
+
+async function deleteCategory(req, res) {
+    let affectedRows = await remove(req.params.id,req.user.id);
+    try{
+        if (!affectedRows) {
+            return res.status(400).json({message: "category not found"});
+        }
+        res.status(200).json({message: "category deleted"});
+    }catch(err){
+        res.status(500).json({message: "server error"});
+    }
+}
+
+async function updateCategory(req, res) {
+    try{
+        let access = await checkaccess(req.category.id, req.category.userid);
+        if (!access) {
+            return res.status(403).json({message: "Access denied"});
+        }
+        let id = req.category.id;
+        let name = req.body.name;
+        let affectedRows = await update(id, name);
+        if (!affectedRows) {
+            return res.status(400).json({message: "category not found"});
+        }
+        res.status(200).json({message: "category updated"});
+    }catch(err){
+        res.status(500).json({message: "server error"});
+    }
+}
 
 
 module.exports ={
     getAllCategories,
-    createcategorie,  
+    createcategorie,
+    getCategoryById,
+    deleteCategory,
+    updateCategory,
 }
