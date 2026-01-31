@@ -40,6 +40,7 @@ message: "Category created successfully"});
 
 async function getCategoryById(req, res) {
     try {
+        
         const category = await getbyid(req.params.id);
         
         if (!category) {
@@ -75,6 +76,7 @@ async function updateCategory(req, res) {
         if (!affectedRows) {
             return res.status(400).json({message: "category not found"});
         }
+
         res.status(200).json({message: "category updated"});
     }catch(err){
         res.status(500).json({message: "server error"});

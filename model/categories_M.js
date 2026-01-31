@@ -52,9 +52,12 @@ async function remove(catid,userid){
 
 async function checkaccess(catid,userid){
     try{
+        
         let sql = `SELECT * FROM categories WHERE id = ? AND user_id = ?`;
         let [row] = await db.query(sql,[catid,userid]);
+        
         return row[0];
+        
     }catch(err){
         console.error("Error checking access:");
         throw err;
