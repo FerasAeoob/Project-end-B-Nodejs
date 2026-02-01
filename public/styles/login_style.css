@@ -10,36 +10,34 @@ body {
   height: 100vh;
   width: 100vw;
   background: #f4f6f8;
-
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.mainidclass {
-  background-color: #1ea9a2;
+.login-form {
+  
   height: 400px;
   width: 240px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 20px;
   border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-
 .form-container {
-  background: #1ea9a2;
-  width: 240px;
+    background: #1ea9a2;
+  width: 100%;
   height: fit-content;
   padding: 30px;
   border-radius: 15px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);   
-  align-items: center;
-  justify-content: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  
+  
+  display: flex;
+  flex-direction: column; 
+  justify-content: center; 
 }
-
 
 .form-container h2 {
   text-align: center;
@@ -49,6 +47,7 @@ body {
 
 .form-group {
   margin-bottom: 15px;
+  width: 100%; 
 }
 
 .form-group label {
@@ -57,7 +56,6 @@ body {
   font-size: 14px;
   color: #555;
   font-weight: bold;
-  
 }
 
 .form-group input {
@@ -66,41 +64,27 @@ body {
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 14px;
-  opacity: 1; 
-  transition: opacity 0.3s ease
-  
+  transition: border 0.3s ease;
 }
-
-
-
-.form-group label:hover + input {
-    opacity: 1; 
-    border-color: #ccc;
-}
-
 
 .form-group input:hover {
     border: 1px solid #333;
-    
 }
-
 
 .form-group input:focus {
   outline: none;
   border: 1px solid #333;
 }
 
-
 .button-group {
   display: flex;
- 
   justify-content: space-between;
-  
-  text-align: center;        
+  text-align: center;
+  margin-top: 10px; /* Added a little space above buttons */
 }
 
 button {
-  padding: 10px 20px;      
+  padding: 10px 20px;
   border: none;
   width: calc(50% - 5px);
   border-radius: 5px;
@@ -108,12 +92,11 @@ button {
   cursor: pointer;
   transition: background 0.2s ease;
 }
-.button-group button:hover{
-    
-    opacity: 0.9;
-    box-shadow: inset 0 0 0 1.5px rgb(54, 31, 31);
-}
 
+.button-group button:hover{
+    opacity: 0.9;
+    box-shadow: inset 0 0 0 1px rgb(54, 31, 31);
+}
 
 .btn-register {
   background: #007bff;

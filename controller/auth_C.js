@@ -65,7 +65,7 @@ async function createjwt(req,res) {
             {expiresIn:'3h'}
         );
         
-        res.cookie('jwt2',token,{maxAge:1000*60*60*2}).status(200).json({message:"logged in and created jwt"});
+        res.cookie('jwt2',token,{httpOnly:true,maxAge:1000*60*60*2}).status(200).json({message:"logged in and created jwt",name:user.name});
         
         
     }

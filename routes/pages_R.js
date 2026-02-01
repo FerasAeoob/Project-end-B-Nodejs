@@ -14,5 +14,11 @@ router.get('/reg', (req, res) => {
   );
 });
 
+router.get('/login', (req, res) => {
+  res.sendFile(
+    path.join(__dirname, '..', 'public', 'pages', 'login.html')
+  );
+});
+
 
 module.exports = router;
