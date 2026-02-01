@@ -102,26 +102,27 @@ async function taskDone(id, elm){
     }
     
 }
-
 async function getCategories() {
     try {
         let response = await fetch('/categories');
-
-        if (!response.ok) {
-            if (response.status === 401) {
-                window.location.href = '/login';
-            }
-            throw new Error('Bad response');
+        if (response.status == 401) {
+            window.location.href = '/login';
+            return;
         }
-
-        allCategories = await response.json();
-        console.log(allCategories);
-
+         if (response.status === 204) {
+            allCategories = [];
+            createSelect(allCategories);
+            return;
+        }
+        let text = await response.text();
+        allCategories = text ? JSON.parse(text) : [];
+        createSelect(allCategories);
+       
     } catch (err) {
-        console.error('Category fetch failed:', err);
-        alert('Could not load categories');
+        alert(err)
     }
 }
+
 
 async function deleteTask(id) {
     try{
@@ -132,11 +133,33 @@ async function deleteTask(id) {
         if(!response.ok){
             alert(data.message);
         }
-        getTasks();
+        
+        getTasks()
+        
     }catch(err){
 
     }
     
+}
+
+async function addTask() {
+   
+    try{
+        let text = document.getElementById('text').value;
+        let category_id =  document.getElementById('mySelect').value;
+        if(category_id == 0){
+            category_id = null;
+        }
+        let response = await fetch('/tasks',{
+            method:'POST',
+            headers: { 'Content-Type':'application/json' },
+            body: JSON.stringify({text,category_id}),
+        })
+        getTasks();
+    }   
+    catch(err){
+        console.error('add task function failed');
+    }
 }
 getCategories();
 getTasks()

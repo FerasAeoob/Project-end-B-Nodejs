@@ -90,7 +90,7 @@ async function editTask(req, res) {
         
         const result = await updateT(req.params.id, req.taskEdit);
         if (result.affectedRows === 0) {
-            return res.status(404).json({ message: "Task not found" });
+            return res.status(404).json({ message: "no edits" });
         }
         
         res.status(200).json({ message: "Task updated successfully" });

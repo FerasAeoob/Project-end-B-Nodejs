@@ -5,9 +5,11 @@ async function getAllCategories(req, res) {
     try{     
         let categories = await getAll(req.user.id);
         if(categories.length === 0){
-            return res.status(404).json({message: "no categories found"});
+            return res.status(204).json({message: "no categories found"});
         }
+        else{
         res.status(200).json(categories);
+        }
     }catch(err){
         res.status(500).json({message: "server error"});
     }
@@ -41,7 +43,7 @@ async function getCategoryById(req, res) {
         const category = await getbyid(req.params.id);
         
         if (!category) {
-            return res.status(404).json({ message: "Category not found" });
+            return res.status(204).json({ message: "Category not found" });
         }
         res.status(200).json(category);
     } catch (err) {
@@ -53,7 +55,7 @@ async function deleteCategory(req, res) {
     let affectedRows = await remove(req.params.id,req.user.id);
     try{
         if (!affectedRows) {
-            return res.status(404).json({message: "category not found"});
+            return res.status(204).json({message: "category not found"});
         }
         res.status(200).json({message: "category deleted"});
     }catch(err){
