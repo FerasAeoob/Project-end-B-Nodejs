@@ -26,7 +26,9 @@ async function getTasks() {
             
             return;
         }
+        createSelect(allCategories);
         createTable(data);
+        
     } catch (err) {
         console.error("Fetch error:", err);
     }
@@ -35,7 +37,9 @@ async function getTasks() {
 
 
 
-    
+
+
+   
 
 
 function createTable(data) {
@@ -55,6 +59,18 @@ function createTable(data) {
         }
     }
     document.getElementById('myTable').innerHTML = txt;
+    
+}
+
+function createSelect(data) {
+    let txt = `<option value="0">All</option>`;
+    for (obj of data) {
+        if (obj) {
+            txt += `<option value="${obj.id}">${obj.name}</option>`;
+        }
+    }
+    document.getElementById('mySelect').innerHTML = txt;
+    
 }
 
 async function taskDone(id, elm){
@@ -74,5 +90,25 @@ async function taskDone(id, elm){
     
 }
 
+async function getCategories() {
+    try {
+        let response = await fetch('/categories');
 
-getTasks();
+        if (!response.ok) {
+            if (response.status === 401) {
+                window.location.href = '/login';
+            }
+            throw new Error('Bad response');
+        }
+
+        allCategories = await response.json();
+        console.log(allCategories);
+
+    } catch (err) {
+        console.error('Category fetch failed:', err);
+        alert('Could not load categories');
+    }
+}
+getCategories();
+getTasks()
+

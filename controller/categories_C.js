@@ -3,7 +3,7 @@ const {getAll,getbyname,addToCategories,getbyid,remove,checkaccess,update} = req
 
 async function getAllCategories(req, res) {
     try{     
-        let categories = await getAll();
+        let categories = await getAll(req.user.id);
         if(categories.length === 0){
             return res.status(404).json({message: "no categories found"});
         }

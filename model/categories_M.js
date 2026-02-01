@@ -1,10 +1,10 @@
 const db = require('../config/db_config');
 
 
-async function getAll(){
+async function getAll(id){
     try{
-        let sql = `SELECT name FROM categories`;
-        let [row] = await db.query(sql);
+        let sql = `SELECT * FROM categories WHERE user_id = ?`;
+        let [row] = await db.query(sql, [id]);
         return row;
     }catch(err){
         console.error("Error getting all categories:");
