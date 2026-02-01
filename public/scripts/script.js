@@ -7,8 +7,6 @@ if (greetingElement) {
 let allCategories = [];
 let allTasks = [];
 
-console.log("we got here");
-
 async function getTasks() {
     try {
         let response = await fetch('/tasks');
