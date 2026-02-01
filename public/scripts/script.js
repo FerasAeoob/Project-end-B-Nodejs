@@ -26,8 +26,9 @@ async function getTasks() {
             
             return;
         }
+        allTasks = data;
         createSelect(allCategories);
-        createTable(data);
+        createTable(allTasks);
         
     } catch (err) {
         console.error("Fetch error:", err);
@@ -70,6 +71,18 @@ function createSelect(data) {
         }
     }
     document.getElementById('mySelect').innerHTML = txt;
+    
+}
+
+function sortTable() {
+    let val = document.getElementById('mySelect').value;
+    let sorted = allTasks.filter(t => t.category_id == val);
+    if(val == 0){
+        createTable(allTasks);
+    }
+    else{
+    createTable(sorted);
+    }
     
 }
 
