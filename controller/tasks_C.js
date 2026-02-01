@@ -93,7 +93,7 @@ async function editTask(req, res) {
             return res.status(404).json({ message: "Task not found" });
         }
         
-        res.json({ message: "Task updated successfully" });
+        res.status(200).json({ message: "Task updated successfully" });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }

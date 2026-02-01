@@ -15,7 +15,7 @@ async function getTasks() {
         
         if (response.status == 401) {
             console.log("Not logged in, redirecting...");
-            // Change this to the actual path of your login page
+            
             window.location.href = '/login'; 
             return;
         }
@@ -55,5 +55,23 @@ function createTable(data) {
         }
     }
     document.getElementById('myTable').innerHTML = txt;
+}
+
+async function taskDone(id, elm){
+    let is_done =  elm.checked;
+    try{
+
+        let response = await fetch(`/tasks/${id}`, {
+            method:'PATCH',
+            headers: { 'Content-Type':'application/json' },
+            body:JSON.stringify({ is_done }),
+        });
+        
+        getTasks();
+
+    }catch(err){
+        alert(err);
+    }
+    
 }
 getTasks();

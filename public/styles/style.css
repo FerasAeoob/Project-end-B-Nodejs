@@ -1,3 +1,8 @@
 #greeting{
     color:aqua
 }
+
+.rowClass {
+    text-decoration:  line-through;
+    color: gray
+}

@@ -36,7 +36,7 @@ async function encryptPassword(req, res, next) {
 
 function islogged(req, res, next) {
     const token = req.cookies.jwt2;
-    console.log("got here");
+    console.log("got here")
     if (!token) {
         return res.status(401).json({ message: "Please login" });
     }
