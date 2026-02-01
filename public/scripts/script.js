@@ -161,6 +161,21 @@ async function addTask() {
         console.error('add task function failed');
     }
 }
+
+async function taskToEdit(id) {
+    try{
+        let text = document.getElementById('text').value;
+        let response = await fetch(`/tasks/${id}`,{
+            method:'PATCH',
+            headers: { 'Content-Type':'application/json' },
+            body: JSON.stringify({text}),
+        });
+        getTasks();
+        document.getElementById('text').value = "";
+    }catch(err){
+        alert(err);
+    }
+}
 getCategories();
 getTasks()
 
