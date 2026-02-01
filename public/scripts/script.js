@@ -66,12 +66,13 @@ async function taskDone(id, elm){
             headers: { 'Content-Type':'application/json' },
             body:JSON.stringify({ is_done }),
         });
-        
         getTasks();
-
+        
     }catch(err){
         alert(err);
     }
     
 }
+
+
 getTasks();
