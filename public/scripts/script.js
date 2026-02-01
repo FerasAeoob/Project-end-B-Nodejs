@@ -122,6 +122,22 @@ async function getCategories() {
         alert('Could not load categories');
     }
 }
+
+async function deleteTask(id) {
+    try{
+        let response = await fetch(`/tasks/${id}`,{
+            method:'DELETE',
+        });
+        let data = await response.json();
+        if(!response.ok){
+            alert(data.message);
+        }
+        getTasks();
+    }catch(err){
+
+    }
+    
+}
 getCategories();
 getTasks()
 
