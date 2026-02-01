@@ -30,12 +30,12 @@ async function getOnetask(req, res) {
 async function createTask(req, res) {
     try {
         let task = req.task;
-        if(await getTaskByname(task.name, req.user.id)){
+        if(await getTaskByname(task.text, req.user.id)){
             return  res.status(409).json({ message: "Task name already exists" });
         }
         
         if(!task.category_id){
-            const result = await addTask(task.name, task.category_id, req.user.id);
+            const result = await addTask(task.text, task.category_id, req.user.id);
         res.status(201).json({ message: "Task created successfully" });
         }
         else{
@@ -43,7 +43,7 @@ async function createTask(req, res) {
             if (!access) {
                 return res.status(403).json({ message: "you dont have access to this category" });
             }
-            const result = await addTask(task.name, task.category_id, req.user.id);
+            const result = await addTask(task.text, task.category_id, req.user.id);
         res.status(201).json({ message: "Task created successfully" });
         } 
     }     

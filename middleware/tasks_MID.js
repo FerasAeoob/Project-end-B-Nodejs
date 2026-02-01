@@ -8,20 +8,20 @@ function isValidId(req, res, next) {
 }
 
 function valuesToaddT(req, res, next) {
-    let name = req.body.name;
+    let text = req.body.text;
     let category_id = req.body.category_id;
-    if (!name) {
+    if (!text) {
         return res.status(400).json({message: "Missing required fields"});
     }
-    req.task = {name, category_id};
+    req.task = {text, category_id};
     next();
 }
 
 function VaulesToEditT(req, res, next) {
     
     let obj = {};
-    if(req.body.name){
-        obj.name = req.body.name;
+    if(req.body.text){
+        obj.text = req.body.text;
     }
     if(req.body.is_done !== undefined){
         obj.is_done = req.body.is_done;

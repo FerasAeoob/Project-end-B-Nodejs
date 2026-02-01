@@ -3,7 +3,7 @@ const db = require('../config/db_config');
 
 async function getallT(id){
     try{
-        let sql = `SELECT id, name, is_done, category_id, user_id FROM tasks WHERE user_id = ?`;
+        let sql = `SELECT id, text, is_done, category_id, user_id FROM tasks WHERE user_id = ?`;
         let [row] = await db.query(sql, [id]);
         return row;
     }catch(err){
@@ -14,7 +14,7 @@ async function getallT(id){
 
 async function checkaccessT(taskid,userid){
     try{
-        let sql = `SELECT name, is_done FROM tasks WHERE id = ? AND user_id = ?`;
+        let sql = `SELECT text, is_done FROM tasks WHERE id = ? AND user_id = ?`;
         let [row] = await db.query(sql,[taskid,userid]);
         return row[0];
     }catch(err){
@@ -25,7 +25,7 @@ async function checkaccessT(taskid,userid){
 
 async function getOneT(id) {
     try{
-        let sql = `SELECT name, is_done FROM tasks WHERE id = ?`;
+        let sql = `SELECT text, is_done FROM tasks WHERE id = ?`;
         let [row] = await db.query(sql,[id]);
         return row[0];
     }catch(err){
@@ -34,20 +34,20 @@ async function getOneT(id) {
     }
 }
 
-async function addTask(name, cateid, userid) {
+async function addTask(text, cateid, userid) {
     try {
-        let sql = `INSERT INTO tasks (name, category_id, user_id) VALUES (?, ?, ?)`;
-        let [result] = await db.query(sql, [name, cateid, userid]);
+        let sql = `INSERT INTO tasks (text, category_id, user_id) VALUES (?, ?, ?)`;
+        let [result] = await db.query(sql, [text, cateid, userid]);
         return result;
     } catch (err) {
         throw err;
     }
 }
 
-async function getTaskByname(name, userid) {
+async function getTaskByname(text, userid) {
     try {
-        let sql = `SELECT * FROM tasks WHERE name = ? AND user_id = ?`;
-        let [row] = await db.query(sql, [name, userid]);
+        let sql = `SELECT * FROM tasks WHERE text = ? AND user_id = ?`;
+        let [row] = await db.query(sql, [text, userid]);
         return row[0];
     } catch (err) {
         throw err;
