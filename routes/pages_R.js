@@ -20,6 +20,11 @@ router.get('/login', (req, res) => {
   );
 });
 
+router.get('/cat', (req, res) => {
+  res.sendFile(
+    path.join(__dirname, '..', 'public', 'pages', 'categories.html')
+  );
+});
 
 
 
