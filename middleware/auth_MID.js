@@ -35,24 +35,24 @@ async function encryptPassword(req, res, next) {
 }
 
 function islogged(req, res, next) {
-    console.log("got to here");
-    let token = req.cookies.jwt2;  // Correct cookie access
-
+    const token = req.cookies.jwt2;
+    console.log("got here");
     if (!token) {
         return res.status(401).json({ message: "Please login" });
     }
 
     try {
-        
-        const payload = jwt.verify(token, process.env.SECRET_KEY);
-        req.user = payload;
+        console.log('got here');
+        req.user = jwt.verify(token, process.env.SECRET_KEY);
         next();
     } catch (err) {
-        console.error("JWT verification failed:", err);
-        return res.status(401).json({ message: "Invalid token" });
+        return res.status(401).json({
+            message: err.name === 'TokenExpiredError'
+                ? "Session expired"
+                : "Invalid token"
+        });
     }
 }
-
 
 
 

@@ -5,11 +5,12 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT;
 const api = process.env.HOST;
-app.use(express.static(path.join(__dirname, "public")));
+app.use(cookies());
+app.use(express.static(path.join(__dirname, 'public')));
 const db = require('./config/db_config');
 
 app.use(express.json());
-app.use(cookies());
+
 
 
 

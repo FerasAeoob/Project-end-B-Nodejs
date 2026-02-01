@@ -5,7 +5,7 @@ async function login() {
     let response = await fetch('/auth/login',{
         method:'POST',
         headers: { 'Content-Type':'application/json' },
-        body:JSON.stringify({username,password}),
+        body: JSON.stringify({username,password}),
     });
     let data = await response.json();
     if (response.status == 200){

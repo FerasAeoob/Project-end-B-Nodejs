@@ -3,7 +3,7 @@ const db = require('../config/db_config');
 
 async function getallT(id){
     try{
-        let sql = `SELECT name, is_done FROM tasks WHERE user_id = ?`;
+        let sql = `SELECT id, name, is_done, category_id, user_id FROM tasks WHERE user_id = ?`;
         let [row] = await db.query(sql, [id]);
         return row;
     }catch(err){

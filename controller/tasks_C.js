@@ -4,7 +4,8 @@ const {checkaccess,getbyid} = require('../model/categories_M');
 async function getAlltasks(req, res) {
     try {
         const tasks = await getallT(req.user.id);
-        res.json(tasks);
+        res.status(200).json(tasks); 
+        
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
