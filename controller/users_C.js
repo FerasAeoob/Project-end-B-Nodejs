@@ -1,4 +1,4 @@
-const {getAll} = require('../model/users_M');
+const {getAll, getbyuname} = require('../model/users_M');
 const {getOne} = require('../model/users_M');
 const {remove} = require('../model/users_M');
 const {update} = require('../model/users_M');
@@ -51,14 +51,28 @@ async function deleteUser(req, res) {
 
 
 async function updateUser(req, res) {
-    try{
-        let affectedRows = await update(req.id, req.user);
-        if (!affectedRows) {
-            return res.status(400).json({message: "user not found"});
+    try {
+        // 1. If username is being changed, check if it's taken by ANOTHER user
+        if (req.usereidt.username) {
+            const existingUser = await getbyuname(req.usereidt.username); // Added await
+            
+            // If we found a user AND that user isn't the one we are currently editing
+            if (existingUser && existingUser.id != req.id) {
+                return res.status(409).json({ message: "Username already exists" });
+            }
         }
-        res.status(200).json({message: "user updated"});
-    }catch(err){
-        res.status(500).json({message: "server error"});
+
+        // 2. Perform the update
+        let affectedRows = await update(req.id, req.usereidt);
+        
+        if (!affectedRows) {
+            return res.status(400).json({ message: "User not found or no changes made" });
+        }
+        
+        res.status(200).json({ message: "User updated" });
+    } catch (err) {
+        console.error(err); // This helps you see the REAL error in the terminal
+        res.status(500).json({ message: "Server error" });
     }
 }
 

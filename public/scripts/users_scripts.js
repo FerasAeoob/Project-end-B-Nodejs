@@ -66,4 +66,52 @@ async function deleteUser(id) {
         throw err;
     }
 }
+
+async function userToEdit(id) {
+    try{
+        let name = document.getElementById('name').value;
+        let email = document.getElementById('email').value;
+        let username = document.getElementById('username').value;
+        let response = await fetch(`/users/${id}`, {
+            method:'PATCH',
+            headers: { 'Content-Type':'application/json' },
+            body: JSON.stringify({name,email,username}),
+        });
+        let data = await response.json();
+        if (!response.ok){
+            alert(data.message);
+            return;
+        }
+
+        getUsers();
+        document.getElementById('name').value ="";
+        document.getElementById('email').value = "";
+        document.getElementById('username').value= "";
+        
+    }catch(err){
+        throw err;
+    }
+}
+async function reg() {
+    let name = document.getElementById('name').value;
+    let username = document.getElementById('username').value;
+    let email = document.getElementById('email').value;
+    let password = document.getElementById('password').value;
+    
+    try{
+        let response = await fetch('/auth/reg',{
+            method:'POST',
+            headers: { 'Content-Type':'application/json' },
+            body:JSON.stringify({name,email,username,password}),
+        });
+        getUsers();
+        let data = await response.json(); 
+        alert(data.message);
+        
+
+    }catch(err){
+        alert(err);
+    }
+
+}
 getUsers();

@@ -36,20 +36,20 @@ async function encryptPassword(req, res, next) {
 
 function islogged(req, res, next) {
     const token = req.cookies ? req.cookies.jwt2 : null;
-    console.log("Cookie Check - Token found:", !!token);
+    
 
     if (!token) {
-        console.log("Blocking: No token provided");
+        
         return res.status(401).json({ message: "Please login" });
     }
 
     try {
         const decoded = jwt.verify(token, process.env.SECRET_KEY);
         req.user = decoded;
-        console.log("Success: Token verified for user:", decoded.id);
+        
         next();
     } catch (err) {
-        console.log("Blocking: Token invalid", err.message);
+       
         return res.status(401).json({ message: "Invalid session" });
     }
 }
