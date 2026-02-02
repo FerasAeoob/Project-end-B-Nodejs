@@ -1,17 +1,11 @@
-
 let greetingElement = document.getElementById('greeting'); 
 if (greetingElement) {
     let name = localStorage.getItem('name') || "Guest";
     greetingElement.innerHTML = "Hello " + name;
 }
 let allCategories = [];
-let allTasks = [];
-
-console.log("we got here");
 
 
-
-   
 function createTable(data) {
     let txt = "";
     for (obj of data) {

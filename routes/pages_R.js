@@ -26,6 +26,11 @@ router.get('/cat', (req, res) => {
   );
 });
 
+router.get('/users', (req, res) => {
+  res.sendFile(
+    path.join(__dirname, '..', 'public', 'pages', 'users.html')
+  );
+});
 
 
 module.exports = router;
