@@ -35,22 +35,22 @@ async function encryptPassword(req, res, next) {
 }
 
 function islogged(req, res, next) {
-    const token = req.cookies.jwt2;
-    console.log("got here")
+    const token = req.cookies ? req.cookies.jwt2 : null;
+    console.log("Cookie Check - Token found:", !!token);
+
     if (!token) {
+        console.log("Blocking: No token provided");
         return res.status(401).json({ message: "Please login" });
     }
 
     try {
-        console.log('got here');
-        req.user = jwt.verify(token, process.env.SECRET_KEY);
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        req.user = decoded;
+        console.log("Success: Token verified for user:", decoded.id);
         next();
     } catch (err) {
-        return res.status(401).json({
-            message: err.name === 'TokenExpiredError'
-                ? "Session expired"
-                : "Invalid token"
-        });
+        console.log("Blocking: Token invalid", err.message);
+        return res.status(401).json({ message: "Invalid session" });
     }
 }
 

@@ -3,7 +3,7 @@ const argon2 = require('argon2');
 
 async function getAll(){
     try{
-        let sql = `SELECT id, name, email FROM users`;
+        let sql = `SELECT name, username, email FROM users`;
         let [row] = await db.query(sql);
         return row;
     }catch(err){

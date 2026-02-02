@@ -5,7 +5,7 @@ const {update} = require('../model/users_M');
 
 async function getAllUsers(req, res) {
     try{
-        console.log("hi");
+        
         let users = await getAll();
         if(users.length === 0){
             return res.status(404).json({message: "no users found"});

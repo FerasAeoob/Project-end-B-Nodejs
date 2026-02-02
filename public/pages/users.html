@@ -4,8 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="../styles/style.css">
 </head>
-<body>
-    giii
+<body style="display: none;" id="mainBody">
+    <h1 id="greeting">login</h1>
+    <a href="/cat">All categories</a>
+    <hr>
+    <label for="id"></label>
+    <input type="hidden" id="id">
+    <label for="text">Name</label>
+    <input type="text" id="text">
+    <br>
+    <label for="text">Userame</label>
+    <input type="text" id="username">
+    <br>
+    <label for="text">Email</label>
+    <input type="text" id="email">
+    <br>
+    <button onclick="">send</button>
+    
+
+    
+    <hr>
+    <table border="1">
+        <thead>
+            <th>name</th>
+            <th>username</th>
+            <th>email</th>
+            <th></th>
+            <th></th>
+        </thead>
+        <tbody id="myTable"></tbody>
+    </table>
+    
+    <script src="../scripts/users_scripts.js"></script>
 </body>
 </html>
+
+
