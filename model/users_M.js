@@ -1,9 +1,9 @@
 const db = require('../config/db_config');
 const argon2 = require('argon2');
-
+const categoriesModel = require('./categories_M');
 async function getAll(){
     try{
-        let sql = `SELECT name, username, email FROM users`;
+        let sql = `SELECT id, name, username, email FROM users`;
         let [row] = await db.query(sql);
         return row;
     }catch(err){

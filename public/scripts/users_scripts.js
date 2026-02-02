@@ -27,7 +27,7 @@ function createTable(data) {
 async function getUsers() {
     try {
         let response = await fetch('/users');
-        console.log(response);
+        
         if (response.status == 401) {
             console.log("Not logged in, redirecting...");
             
@@ -50,4 +50,20 @@ async function getUsers() {
     }
 }
 
+async function deleteUser(id) {
+    try{
+        let response = await fetch(`/users/${id}`,{
+            method:'DELETE'
+        });
+        let data = await response.json();
+        if (!response.ok) {
+            alert(data.message);
+            return;
+        }
+        
+        getUsers();
+    }catch(err){
+        throw err;
+    }
+}
 getUsers();

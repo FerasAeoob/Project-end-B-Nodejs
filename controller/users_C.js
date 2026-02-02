@@ -2,7 +2,8 @@ const {getAll} = require('../model/users_M');
 const {getOne} = require('../model/users_M');
 const {remove} = require('../model/users_M');
 const {update} = require('../model/users_M');
-
+const {getallT} = require('../model/tasks_M');
+const categoriesModel = require('../model/categories_M');
 async function getAllUsers(req, res) {
     try{
         
@@ -27,16 +28,27 @@ async function getOneUser(req, res) {
 }
 
 async function deleteUser(req, res) {
-    let affectedRows = await remove(req.id,req.user);
     try{
+        
+        const tasks = await getallT(req.params.id);        
+        const cats = await categoriesModel.getAll(req.params.id);
+        
+        if (tasks.length > 0 || cats.length > 0) {
+            return res.status(409).json({message: "user has tasks or categories"});
+        }
+
+        let affectedRows = await remove(req.params.id);
         if (!affectedRows) {
             return res.status(400).json({message: "user not found"});
         }
+
         res.status(200).json({message: "user deleted"});
-    }catch(err){
+    } catch(err) {
+        console.error(err); // log actual error
         res.status(500).json({message: "server error"});
     }
 }
+
 
 async function updateUser(req, res) {
     try{
