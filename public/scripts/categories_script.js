@@ -56,7 +56,8 @@ async function deleteCat(id) {
             if (confirm(data.message)) {
                 let secondResponse = await fetch(`/categories/force/${id}`, { method: 'DELETE' });
                 if (secondResponse.status == 200) {
-                    alert("Everything deleted!");
+                    let data = await secondResponse.json();
+                    alert(data.message);
                 }
             }
         } 

@@ -68,7 +68,7 @@ async function deleteCategory(req, res) {
 
 async function forceDeleteCategory(req, res) {
     try {
-        await removeWithTasks(req.params.id);
+        await removeWithTasks(req.params.id, req.user.id);
         res.status(200).json({ message: "Category and tasks deleted" });
     } catch (err) {
         res.status(500).json({ message: "Server error" });
