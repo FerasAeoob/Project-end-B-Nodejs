@@ -72,10 +72,11 @@ async function userToEdit(id) {
         let name = document.getElementById('name').value;
         let email = document.getElementById('email').value;
         let username = document.getElementById('username').value;
+        let password = document.getElementById('password').value;
         let response = await fetch(`/users/${id}`, {
             method:'PATCH',
             headers: { 'Content-Type':'application/json' },
-            body: JSON.stringify({name,email,username}),
+            body: JSON.stringify({name,email,username,password}),
         });
         let data = await response.json();
         if (!response.ok){
@@ -87,6 +88,8 @@ async function userToEdit(id) {
         document.getElementById('name').value ="";
         document.getElementById('email').value = "";
         document.getElementById('username').value= "";
+        document.getElementById('password').value = "";
+        
         
     }catch(err){
         throw err;
