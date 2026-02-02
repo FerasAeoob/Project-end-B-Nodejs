@@ -33,10 +33,6 @@ async function createTask(req, res) {
         const userId = req.user.id;
 
       
-        const existing = await getTaskByname(text, userId);
-        if (existing) {
-            return res.status(409).json({ message: "Task name already exists" });
-        }
 
         if (category_id) {
             const access = await checkaccess(category_id, userId);
