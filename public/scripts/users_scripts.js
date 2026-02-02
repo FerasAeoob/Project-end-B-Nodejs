@@ -55,6 +55,7 @@ async function deleteUser(id) {
         let response = await fetch(`/users/${id}`,{
             method:'DELETE'
         });
+
         let data = await response.json();
         if (response.status == 409){
             if(confirm("user have tasks or categries, deleting user will result in deleting everything under its name")){
@@ -68,7 +69,6 @@ async function deleteUser(id) {
             return;
         }
         getUsers();
-        
         
         
     }catch(err){
@@ -134,7 +134,9 @@ async function forcedeleteuserbyid(id) {
         let secondResponse = await fetch(`/users/force/${id}`, { method: 'DELETE' });
         if (secondResponse.status == 200) {
             alert("Everything deleted!");
+
         }
+        getUsers();
         
         
         
