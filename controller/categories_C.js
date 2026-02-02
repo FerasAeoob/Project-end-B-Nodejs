@@ -32,7 +32,7 @@ async function createcategorie(req, res) {
         
 
     } catch (err) {
-        // very important for debugging
+        
         res.status(500).json({ message: "server error" });
     }
 }

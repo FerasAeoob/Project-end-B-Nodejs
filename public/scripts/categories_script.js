@@ -26,7 +26,7 @@ function createTable(data) {
 
 async function getCategories() {
     try {
-        let response = await fetch('/users');
+        let response = await fetch('/categories');
         if (response.status == 401) {
             window.location.href = '/login';
             return;
