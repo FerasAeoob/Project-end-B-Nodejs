@@ -99,7 +99,19 @@ async function verifypassword(username, password) {
     
 }
 
-
+async function forceRemoveUser(userid) {
+    try{
+    
+    await db.query(`DELETE FROM tasks user_id=?`, [userid]);
+    await db.query(`DELETE FROM categories WHERE user_id = ?`, [userid]);
+    await db.query(`DELETE FROM tasks user_id=?`, [userid]);
+    return result.affectedRows;
+    
+    }catch(err){
+        console.error("remove all tasks error");
+        throw err;
+    }
+}
 
 
 

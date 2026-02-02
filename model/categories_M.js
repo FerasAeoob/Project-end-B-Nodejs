@@ -11,10 +11,10 @@ async function getAll(id){
         throw err;
     }   
 }
-async function getbyname(name) {
+async function getbyname(name,userid) {
     try{
-        let sql = `SELECT * FROM categories WHERE name = ?`;
-        let [row] = await db.query(sql,[name]);
+        let sql = `SELECT * FROM categories WHERE name = ? AND user_id = ?`;
+        let [row] = await db.query(sql,[name, userid]);
         return row[0];
     }catch(err){
         console.error("Error getting category by name:");
@@ -87,6 +87,8 @@ async function removeWithTasks(catid, userid) {
         throw err;
     }
 }
+
+
 module.exports ={
     getAll,
     addToCategories,
@@ -96,4 +98,6 @@ module.exports ={
     checkaccess,
     update,
     removeWithTasks,
+    
+    
 }

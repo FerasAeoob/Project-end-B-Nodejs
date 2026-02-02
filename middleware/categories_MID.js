@@ -4,9 +4,12 @@ const { getbyid } = require('../model/categories_M');
 
 function valuesToadd(req, res, next) {
     let name = req.body.name;
+    let userid = req.user.id
     if(!name){
         return res.status(400).json({message: "Category name is required"});
     }
+    console.log()
+    req.category = {name, userid};
     next();
 }
 

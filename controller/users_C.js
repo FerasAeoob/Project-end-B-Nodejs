@@ -1,4 +1,4 @@
-const {getAll, getbyuname} = require('../model/users_M');
+const {getAll, getbyuname, getbyemail} = require('../model/users_M');
 const {getOne} = require('../model/users_M');
 const {remove} = require('../model/users_M');
 const {update} = require('../model/users_M');
@@ -52,17 +52,19 @@ async function deleteUser(req, res) {
 
 async function updateUser(req, res) {
     try {
-        // 1. If username is being changed, check if it's taken by ANOTHER user
         if (req.usereidt.username) {
-            const existingUser = await getbyuname(req.usereidt.username); // Added await
-            
-            // If we found a user AND that user isn't the one we are currently editing
+            const existingUser = await getbyuname(req.usereidt.username);
             if (existingUser && existingUser.id != req.id) {
                 return res.status(409).json({ message: "Username already exists" });
             }
         }
+        if (req.usereidt.email) {
+            const existingemail = await getbyemail(req.usereidt.email);
+            if (existingemail && existingemail.id != req.id) {
+                return res.status(409).json({ message: "Email already exists" });
+            }
+        }
 
-        // 2. Perform the update
         let affectedRows = await update(req.id, req.usereidt);
         
         if (!affectedRows) {

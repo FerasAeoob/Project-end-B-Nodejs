@@ -1,7 +1,7 @@
 let greetingElement = document.getElementById('greeting'); 
 if (greetingElement) {
     let name = localStorage.getItem('name') || "Guest";
-    greetingElement.innerHTML = "Hello " + name;
+    greetingElement.innerHTML = "Hello " + name + " you are on categories";
 }
 let allCategories = [];
 
@@ -80,7 +80,14 @@ async function addCat() {
             headers: { 'Content-Type':'application/json' },
             body: JSON.stringify({name}),
         })
-        getCategories();
+        getCategories ();
+        let data = await response.json();
+        if(!response.ok){
+            alert(data.message);
+            return;
+        }
+        getCategories ();
+        document.getElementById('name').value = "";
     }   
     catch(err){
         console.error('add task function failed');

@@ -1,7 +1,7 @@
 let greetingElement = document.getElementById('greeting'); 
 if (greetingElement) {
     let name = localStorage.getItem('name') || "Guest";
-    greetingElement.innerHTML = "Hello " + name;
+    greetingElement.innerHTML = "Hello " + name + " you are on users";
 }
 let allUsers = [];
 
@@ -56,6 +56,13 @@ async function deleteUser(id) {
             method:'DELETE'
         });
         let data = await response.json();
+        if (response.status == 409){
+            if(confirm("user have tasks or categries, deleting user will result in deleting everything under its name")){
+                forcedeleteusercateg(id);
+                getUsers();
+                return;
+            }
+        }
         if (!response.ok) {
             alert(data.message);
             return;
@@ -116,5 +123,26 @@ async function reg() {
         alert(err);
     }
 
+}
+
+async function forcedeleteusercateg(id) {
+    try {
+        let response = await fetch(`/categories/${id}`, { method: 'DELETE' });
+        if (response.status === 409) {
+            let data = await response.json();
+            
+            let secondResponse = await fetch(`/categories/force/user/${id}`, { method: 'DELETE' });
+            if (secondResponse.status == 200) {
+                alert("Everything deleted!");
+            }
+        }
+     
+    
+        
+        getUsers(); 
+        
+    } catch (err) {
+        console.error(err);
+    }
 }
 getUsers();

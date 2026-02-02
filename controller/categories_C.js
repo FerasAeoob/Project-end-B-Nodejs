@@ -17,22 +17,21 @@ async function getAllCategories(req, res) {
 
 async function createcategorie(req, res) {
     try {
-        
-        const check = await getbyname(req.body.name);
-
-        if (check) {
-            return res.status(409).json({ message: "Category name already exists" });
+        if (!req.category || !req.category.name) {
+            return res.status(400).json({ message: "Invalid category data" });
+        }
+        const check = await getbyname(req.category.name,req.user.id);
+        if (check && check.user_id === req.user.id) {
+            return res.status(409).json({ message: "Category name already exists for your account" });
         }
         
-        const payload = req.user;
+        // 3. Insert
+        await addToCategories(req.category.name, req.user.id);
         
-        const result = await addToCategories(req.body.name, payload.id);
-        
-        res.status(201).json({message: "Category created successfully"});
-        
+        res.status(201).json({ message: "Category created successfully" });
 
     } catch (err) {
-        
+        console.error("Create Category Error:", err); // ALWAYS log the error to your terminal
         res.status(500).json({ message: "server error" });
     }
 }

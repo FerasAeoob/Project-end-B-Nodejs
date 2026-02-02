@@ -2,7 +2,7 @@
 let greetingElement = document.getElementById('greeting'); 
 if (greetingElement) {
     let name = localStorage.getItem('name') || "Guest";
-    greetingElement.innerHTML = "Hello " + name;
+    greetingElement.innerHTML = "Hello " + name + " you are on tasks";
 }
 let allCategories = [];
 let allTasks = [];
