@@ -40,7 +40,7 @@ async function getCategories() {
         document.getElementById('mainBody').style.display = 'block';
          if (response.status === 204) {
             allCategories = [];
-            
+            createTable(allCategories);
             return;
         }
         let text = await response.text();
@@ -54,22 +54,27 @@ async function getCategories() {
 
 
 async function deleteCat(id) {
-    try{
-        let response = await fetch(`/categories/${id}`,{
-            method:'DELETE',
-        });
-        let data = await response.json();
-        if(!response.ok){
-            alert(data.message);
-        }
+    try {
+        let response = await fetch(`/categories/${id}`, { method: 'DELETE' });
+
+        if (response.status === 409) {
+            let data = await response.json();
+            if (confirm(data.message)) {
+                let secondResponse = await fetch(`/categories/force/${id}`, { method: 'DELETE' });
+                if (secondResponse.status == 200) {
+                    alert("Everything deleted!");
+                }
+            }
+        } 
         
-        getCategories();
+        getCategories(); 
         
-    }catch(err){
-        
+    } catch (err) {
+        console.error(err);
     }
-    
 }
+    
+
 
 async function addCat() {
    
@@ -96,8 +101,8 @@ async function CatToEdit(id) {
             headers: { 'Content-Type':'application/json' },
             body: JSON.stringify({name,id}),
         });
-        getTasks();
-        document.getElementById('text').value = "";
+        getCategories();
+        document.getElementById('name').value = "";
     }catch(err){
         alert(err);
     }

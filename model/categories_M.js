@@ -74,6 +74,19 @@ async function update(catid, category){
         throw err;
     }
 }
+
+async function removeWithTasks(catid, userid) {
+    try{
+    
+    await db.query(`DELETE FROM tasks WHERE category_id = ? AND user_id=?`, [catid,userid]);;
+    let sql = `DELETE FROM categories WHERE id = ? AND user_id = ?`;
+    let [result] = await db.query(sql, [catid, userid]);
+    return result.affectedRows;
+    }catch(err){
+        console.error("remove all tasks error");
+        throw err;
+    }
+}
 module.exports ={
     getAll,
     addToCategories,
@@ -82,4 +95,5 @@ module.exports ={
     remove,
     checkaccess,
     update,
+    removeWithTasks,
 }

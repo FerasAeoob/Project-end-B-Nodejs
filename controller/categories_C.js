@@ -1,4 +1,4 @@
-const {getAll,getbyname,addToCategories,getbyid,remove,checkaccess,update} = require('../model/categories_M');
+const {getAll,getbyname,addToCategories,getbyid,remove,checkaccess,update,removeWithTasks} = require('../model/categories_M');
 
 
 async function getAllCategories(req, res) {
@@ -52,14 +52,27 @@ async function getCategoryById(req, res) {
 }
 
 async function deleteCategory(req, res) {
-    let affectedRows = await remove(req.params.id,req.user.id);
+    
     try{
+        let affectedRows = await remove(req.params.id,req.user.id);
         if (!affectedRows) {
             return res.status(204).json({message: "category not found"});
         }
         res.status(200).json({message: "category deleted"});
     }catch(err){
+        if(err.errno == 1451){
+            return res.status(409).json({message:"Category have tasks. Delete anyway?"});
+        }
         res.status(500).json({message: "server error"});
+    }
+}
+
+async function forceDeleteCategory(req, res) {
+    try {
+        await removeWithTasks(req.params.id,req.user.id);
+        res.status(200).json({ message: "Category and tasks deleted" });
+    } catch (err) {
+        res.status(500).json({ message: "Server error" });
     }
 }
 
@@ -89,4 +102,5 @@ module.exports ={
     getCategoryById,
     deleteCategory,
     updateCategory,
+    forceDeleteCategory,
 }

@@ -26,7 +26,7 @@ function VaulesToEditT(req, res, next) {
     if(req.body.is_done !== undefined){
         obj.is_done = req.body.is_done;
     }
-    if(req.body.category_id){
+    if(req.body.category_id !== undefined){
         obj.category_id = req.body.category_id;
     }
     Object.keys(obj);

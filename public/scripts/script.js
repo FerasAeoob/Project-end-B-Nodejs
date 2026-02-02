@@ -7,6 +7,7 @@ if (greetingElement) {
 let allCategories = [];
 let allTasks = [];
 
+
 async function getTasks() {
     try {
         let response = await fetch('/tasks');
@@ -43,15 +44,20 @@ async function getTasks() {
 
 function createTable(data) {
     let txt = "";
+    
     for (obj of data) {
         if (obj) {
             let isChecked = obj.is_done ? "checked" : "";
             let rowClass = obj.is_done ? "class='rowClass'" : "";
-            // let catName = allCategories[obj.category_id] ? allCategories[obj.category_id].name : '--';
+            let catOptions = `<option value="0">-- No Category --</option>`;
+            for (cat of allCategories) {
+                let isSelected = (cat.id == obj.category_id) ? "selected" : "";
+                catOptions += `<option value="${cat.id}" ${isSelected}>${cat.name}</option>`;
+            }
             txt += `<tr ${rowClass}>`;
             txt += `<td><input type="checkbox" ${isChecked} onchange="taskDone(${obj.id},this)"></td>`;
             txt += `<td>${obj.text}</td>`;
-            txt += `<td>${obj.category_name}</td>`;
+            txt += `<td><select onchange="editcatselector(${obj.id}, this.value)">${catOptions}</select></td>`;
             txt += `<td><button onclick="deleteTask(${obj.id})">🗑️</button></td>`;
             txt += `<td><button onclick="taskToEdit(${obj.id})">✏️</button></td>`;
             txt += "</tr>";
@@ -61,6 +67,27 @@ function createTable(data) {
     
 }
 
+async function editcatselector(taskId, newCategoryId) {
+    try {
+        
+        let category_id = (newCategoryId == "0") ? null : newCategoryId;
+
+        let response = await fetch(`/tasks/${taskId}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ category_id }) 
+        });
+
+        if (response.ok) {
+            console.log("Category updated!");
+            getTasks(); 
+        } else {
+            alert("Failed to update category");
+        }
+    } catch (err) {
+        console.error(err);
+    }
+}
 function createSelect(data) {
     let txt = `<option value="0">All</option>`;
     for (obj of data) {
