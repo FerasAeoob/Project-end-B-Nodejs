@@ -81,7 +81,6 @@ async function addCat() {
             headers: { 'Content-Type':'application/json' },
             body: JSON.stringify({name}),
         })
-        getCategories ();
         let data = await response.json();
         if(!response.ok){
             alert(data.message);

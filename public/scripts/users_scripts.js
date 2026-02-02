@@ -58,8 +58,8 @@ async function deleteUser(id) {
         let data = await response.json();
         if (response.status == 409){
             if(confirm("user have tasks or categries, deleting user will result in deleting everything under its name")){
-                forcedeleteusercateg(id);
-                getUsers();
+                forcedeleteuserbyid(id);
+                
                 return;
             }
         }
@@ -67,8 +67,10 @@ async function deleteUser(id) {
             alert(data.message);
             return;
         }
-        
         getUsers();
+        
+        
+        
     }catch(err){
         throw err;
     }
@@ -125,21 +127,16 @@ async function reg() {
 
 }
 
-async function forcedeleteusercateg(id) {
+async function forcedeleteuserbyid(id) {
     try {
-        let response = await fetch(`/categories/${id}`, { method: 'DELETE' });
-        if (response.status === 409) {
-            let data = await response.json();
-            
-            let secondResponse = await fetch(`/categories/force/user/${id}`, { method: 'DELETE' });
-            if (secondResponse.status == 200) {
-                alert("Everything deleted!");
-            }
-        }
-     
-    
         
-        getUsers(); 
+        console.log("got first");
+        let secondResponse = await fetch(`/users/force/${id}`, { method: 'DELETE' });
+        if (secondResponse.status == 200) {
+            alert("Everything deleted!");
+        }
+        
+        
         
     } catch (err) {
         console.error(err);

@@ -1,4 +1,4 @@
-const {getAll, getbyuname, getbyemail} = require('../model/users_M');
+const {getAll, getbyuname, getbyemail,forceRemoveUser} = require('../model/users_M');
 const {getOne} = require('../model/users_M');
 const {remove} = require('../model/users_M');
 const {update} = require('../model/users_M');
@@ -78,9 +78,24 @@ async function updateUser(req, res) {
     }
 }
 
+async function forceDeleteuser(req, res) {
+    try{
+        let affectedRows = await forceRemoveUser(req.params.id);
+        if (!affectedRows) {
+            return res.status(400).json({message: "user not found"});
+        }
+        res.status(200).json({message: "user with all his data has been deleted"});
+      
+    }
+    catch{
+        res.status(500).json({message: "Server error"});
+    }
+    
+}
 module.exports ={
     getAllUsers,
     getOneUser,
     deleteUser,
     updateUser,
+    forceDeleteuser,
 }

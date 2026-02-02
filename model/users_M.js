@@ -99,16 +99,17 @@ async function verifypassword(username, password) {
     
 }
 
-async function forceRemoveUser(userid) {
+async function forceRemoveUser(id) {
     try{
-    
-    await db.query(`DELETE FROM tasks user_id=?`, [userid]);
-    await db.query(`DELETE FROM categories WHERE user_id = ?`, [userid]);
-    await db.query(`DELETE FROM tasks user_id=?`, [userid]);
+    console.log("got in");
+    await db.query(`DELETE FROM tasks WHERE user_id= ?`, [id]);
+    await db.query(`DELETE FROM categories WHERE user_id = ?`, [id]);
+    let result = await db.query(`DELETE FROM users WHERE id = ?`, [id]);
+    console.log("got out");
     return result.affectedRows;
     
     }catch(err){
-        console.error("remove all tasks error");
+        console.error("remove all error");
         throw err;
     }
 }
@@ -124,4 +125,5 @@ module.exports ={
     getbyuname,
     getbyemail,
     verifypassword,
+    forceRemoveUser,
 }
