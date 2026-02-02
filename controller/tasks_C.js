@@ -29,28 +29,30 @@ async function getOnetask(req, res) {
 
 async function createTask(req, res) {
     try {
-        let task = req.task;
-        if(await getTaskByname(task.text, req.user.id)){
-            return  res.status(409).json({ message: "Task name already exists" });
+        const { text, category_id } = req.task;
+        const userId = req.user.id;
+
+      
+        const existing = await getTaskByname(text, userId);
+        if (existing) {
+            return res.status(409).json({ message: "Task name already exists" });
         }
-        
-        if(!task.category_id){
-            const result = await addTask(task.text, task.category_id, req.user.id);
-        res.status(201).json({ message: "Task created successfully" });
-        }
-        else{
-            const access = await checkaccess(task.category_id,req.user.id);
+
+        if (category_id) {
+            const access = await checkaccess(category_id, userId);
             if (!access) {
-                return res.status(403).json({ message: "you dont have access to this category" });
+                return res.status(403).json({ message: "You don't have access to this category" });
             }
-            const result = await addTask(task.text, task.category_id, req.user.id);
-        res.status(201).json({ message: "Task created successfully" });
-        } 
-    }     
-    catch (err) {
-        res.status(500).json({ error: err.message });
+        }
+
+        await addTask(text, category_id || null, userId);
+        
+        return res.status(201).json({ message: "Task created successfully" });
+
+    } catch (err) {
+        console.error("CREATE TASK ERROR:", err); // SEE THIS IN YOUR TERMINAL
+        return res.status(500).json({ error: err.message });
     }
-    
 }
 
 

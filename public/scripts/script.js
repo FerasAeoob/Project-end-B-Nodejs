@@ -180,6 +180,12 @@ async function addTask() {
             headers: { 'Content-Type':'application/json' },
             body: JSON.stringify({text,category_id}),
         })
+        let data = await response.json();
+        if(response.status === 409){
+            alert(data.message);
+            return;
+        }
+
         getTasks();
     }   
     catch(err){
